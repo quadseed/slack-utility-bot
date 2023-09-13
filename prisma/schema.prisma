@@ -1,0 +1,42 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Poll {
+  id          Int      @id @default(autoincrement())
+  channel_id  String
+  ts          String
+  author_id   String
+  title       String
+  description String
+  options     Option[]
+  created_at  DateTime @default(now())
+
+  @@map("polls")
+}
+
+model Option {
+  id          Int          @id @default(autoincrement())
+  poll        Poll         @relation(fields: [poll_id], references: [id], onDelete: Cascade)
+  poll_id     Int
+  label       String
+  user_choice UserChoice[]
+
+  @@map("options")
+}
+
+model UserChoice {
+  id        Int    @id @default(autoincrement())
+  option    Option @relation(fields: [option_id], references: [id], onDelete: Cascade)
+  option_id Int
+
+  @@map("userchoices")
+}

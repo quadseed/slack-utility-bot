@@ -6,6 +6,9 @@ on:
       - main
   pull_request:
 
+env:
+  DATABASE_URL: ${{ secrets.VALIDATION_DATABASE_URL }}
+
 jobs:
   build:
     runs-on: ubuntu-latest
